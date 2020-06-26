@@ -9,6 +9,7 @@
   "author": "Lucas Cordeiro Nascimento",
   "license": "ISC",
   "devDependencies": {
+    "electron": "^9.0.5",
     "typescript": "^3.9.5"
   }
 }
