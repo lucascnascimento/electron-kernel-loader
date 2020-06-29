@@ -1,12 +1,16 @@
 import { app, BrowserWindow, ipcMain } from "electron";
+import { IpcChannelInterface } from "./IPC/IpcChannelInterface";
+import { SystemInfoChannel } from "./IPC/SystemInfoChannel";
 
 class Main {
   private mainWindow: BrowserWindow;
 
-  public init() {
+  public init(ipcChannels: IpcChannelInterface[]) {
     app.on("ready", this.createWindow);
     app.on("window-all-closed", this.onWindowAllClosed);
     app.on("activate", this.onActivate);
+
+    this.registerIpcChannels(ipcChannels);
   }
 
   private onWindowAllClosed() {
@@ -34,6 +38,14 @@ class Main {
     this.mainWindow.webContents.openDevTools();
     this.mainWindow.loadFile("../index.html");
   }
+
+  private registerIpcChannels(ipcChannels: IpcChannelInterface[]) {
+    ipcChannels.forEach((channel) =>
+      ipcMain.on(channel.getName(), (event, request) =>
+        channel.handle(event, request)
+      )
+    );
+  }
 }
 
-new Main().init();
+new Main().init([new SystemInfoChannel()]);
