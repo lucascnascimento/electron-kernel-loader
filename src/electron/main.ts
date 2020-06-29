@@ -36,7 +36,7 @@ class Main {
     });
 
     this.mainWindow.webContents.openDevTools();
-    this.mainWindow.loadFile("../index.html");
+    this.mainWindow.loadFile("../../index.html");
   }
 
   private registerIpcChannels(ipcChannels: IpcChannelInterface[]) {
